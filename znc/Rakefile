@@ -1,0 +1,21 @@
+namespace :docker do
+  repository = "katsuya94/znc"
+  image = "#{repository}:latest"
+
+  task :build do
+    exec "docker build -t #{image} ."
+  end
+
+  task :push do
+    exec "docker push #{image}"
+  end
+end
+
+namespace :k8s do
+  task :configure do
+    exec "kubectl create configmap znc-conf -o yaml --dry-run "\
+      "--from-file config/znc.conf "\
+      "| kubectl apply -f -"
+  end
+end
+

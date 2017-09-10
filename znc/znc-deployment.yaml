@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: znc
+spec:
+  template:
+    metadata:
+      labels:
+        app: znc
+    spec:
+      containers:
+        - name: znc
+          image: katsuya94/znc:latest
+          volumeMounts:
+            - name: znc-conf
+              mountPath: /home/app/.znc/configs
+      volumes:
+        - name: znc-conf
+          configMap:
+            name: znc-conf
