@@ -5,11 +5,9 @@ RUN addgroup -S app && adduser -S -G app app
 WORKDIR /home/app
 
 RUN apk update
-RUN apk add sudo
 RUN apk add znc
 RUN apk add ca-certificates
 
-ADD entrypoint.sh .
+USER app
 
-ENTRYPOINT ["./entrypoint.sh"]
 CMD ["znc", "--foreground"]

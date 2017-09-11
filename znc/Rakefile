@@ -13,7 +13,7 @@ end
 
 namespace :k8s do
   task :configure do
-    exec "kubectl create configmap znc-conf -o yaml --dry-run "\
+    exec "kubectl create configmap znc -o yaml --dry-run "\
       "--from-file config/znc.conf "\
       "| kubectl apply -f -"
   end
