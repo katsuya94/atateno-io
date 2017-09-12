@@ -28,3 +28,5 @@ spec:
           ports:
             - name: http
               containerPort: 3000
+      securityContext:
+        runAsNonRoot: true

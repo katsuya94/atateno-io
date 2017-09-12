@@ -38,4 +38,9 @@ spec:
             items:
               - key: znc.conf
                 path: configs/znc.conf
-                mode: 0666
+                mode: 0660
+      securityContext:
+        runAsNonRoot: true
+        fsGroup: 1337
+        supplementalGroups:
+          - 1337
