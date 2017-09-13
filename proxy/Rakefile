@@ -1,0 +1,13 @@
+namespace :docker do
+  repository = "katsuya94/proxy"
+  image = "#{repository}:latest"
+
+  task :build do
+    exec "docker build -t #{image} ."
+  end
+
+  task :push do
+    exec "docker push #{image}"
+  end
+end
+

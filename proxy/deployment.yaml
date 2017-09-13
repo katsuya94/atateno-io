@@ -1,0 +1,19 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: proxy
+spec:
+  template:
+    metadata:
+      labels:
+        app: proxy
+    spec:
+      containers:
+        - name: proxy
+          image: katsuya94/proxy:latest
+          ports:
+            - name: https
+              containerPort: 443
+            - name: irc
+              containerPort: 7000
