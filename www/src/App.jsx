@@ -12,7 +12,7 @@ export default function App() {
 
 function Hero() {
   return (
-    <section className="hero is-medium is-dark">
+    <section className="hero is-dark">
       <div className="hero-body">
         <Greeting />
       </div>
