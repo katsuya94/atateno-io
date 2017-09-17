@@ -5,6 +5,7 @@ export default function App() {
   return (
     <div>
       <Hero />
+      <Nav />
       <Body />
     </div>
   );
@@ -14,10 +15,9 @@ function Hero() {
   return (
     <section className="hero is-dark">
       <div className="hero-body">
-        <Greeting />
-      </div>
-      <div className="hero-foot">
-        <Nav />
+        <div className="container">
+          <Greeting />
+        </div>
       </div>
     </section>
   );
@@ -25,13 +25,13 @@ function Hero() {
 
 function Nav() {
   return (
-    <nav className="tabs is-centered is-medium">
+    <div className="tabs is-medium">
       <ul>
         <li className="is-active"><a>Professional</a></li>
         <li><a>Blog</a></li>
         <li><a>Projects</a></li>
       </ul>
-    </nav>
+    </div>
   );
 }
 

@@ -1,7 +1,19 @@
 @import "~bulma/sass/utilities/initial-variables";
+
+$turquoise: rgb(80, 202, 221);
+$blue: rgb(56, 121, 239);
+$green: rgb(145, 218, 8);
+$yellow: rgb(216, 207, 84);
+$red: rgb(239, 0, 88);
+$orange: rgb(251, 168, 82);
+$white-ter: rgb(238, 238, 222);
+$grey-darker: rgb(66, 66, 66);
+
 @import "~bulma";
 
-.is-code {
-  font-family: "Courier New", Courier, monospace;
+.greeting-text {
+  font-family: "DejaVuSansMono", Courier, monospace;
+  src: url("~dejavu-fonts-ttf/ttf/DejaVuSansMono.ttf");
+  height: 6.0em;
 }
 

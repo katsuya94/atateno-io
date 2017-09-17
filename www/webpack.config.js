@@ -27,6 +27,10 @@ module.exports = {
         test: [/\.scss$/, /\.sass$/],
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        use: ['file-loader'],
+      },
     ],
   },
   plugins: [new HtmlWebpackPlugin({
