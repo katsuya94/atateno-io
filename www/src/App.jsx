@@ -1,13 +1,19 @@
 import React from 'react';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 import Greeting from './Greeting';
+import Professional from './Professional';
+import Blog from './Blog';
+import Projects from './Projects';
 
 export default function App() {
   return (
-    <div>
-      <Hero />
-      <Nav />
-      <Body />
-    </div>
+    <BrowserRouter>
+      <div>
+        <Hero />
+        <Nav />
+        <Body />
+      </div>
+    </BrowserRouter>
   );
 }
 
@@ -25,11 +31,11 @@ function Hero() {
 
 function Nav() {
   return (
-    <div className="tabs is-medium">
+    <div className="tabs is-centered is-medium">
       <ul>
-        <li className="is-active"><a>Professional</a></li>
-        <li><a>Blog</a></li>
-        <li><a>Projects</a></li>
+        <li><Link to="/">Professional</Link></li>
+        <li><Link to="/blog">Blog</Link></li>
+        <li><Link to="/projects">Projects</Link></li>
       </ul>
     </div>
   );
@@ -38,19 +44,9 @@ function Nav() {
 function Body() {
   return (
     <section className="section">
-      <div className="container">
-        <div className="content">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
-        </div>
-      </div>
+      <Route exact path="/" component={Professional} />
+      <Route path="/blog" component={Blog} />
+      <Route path="/projects" component={Projects} />
     </section>
   );
 }

@@ -19,8 +19,8 @@ const SNIPPETS = [
   {
     text:
     'ReactDOM.render(\n' +
-    '\u00A0\u00A0<p><%= greetingText %></p>,\n' +
-    '\u00A0\u00A0document.getElementById(\'root\'),\n' +
+    '  <p><%= greetingText %></p>,\n' +
+    '  document.getElementById(\'root\'),\n' +
     ');',
     color:
     'ccccccccwccccccw\n' +
@@ -28,11 +28,30 @@ const SNIPPETS = [
     '  rrrrrrrrwccccccccccccccwggggggww\n' +
     'ww',
   },
+  {
+    text:
+    'def show\n' +
+    '  render plain: "<%= greetingText %>", status: :ok\n' +
+    'end',
+    color:
+    'rrr wwww\n' +
+    '  wwwwww cccccw g<%= greetingColor("g") %>gw ccccccw ccc\n' +
+    'rrr',
+  },
+  {
+    text:
+    'kubectl run greet --image python:3\\\n' +
+    '  --port 8000 --hostport 8000 -- sh -c\\\n' +
+    '  "echo \'<%= greetingText %>\' > greet && python3 -m http.server"',
+    color:
+    'wwwwwww www wwwwt ccccccc wwwwwwwwr\n' +
+    '  cccccc rrrr cccccccccc rrrr cc ww ccr\n' +
+    '  gwwww g<%= greetingColor("g") %>g r wwwww rr wwwwwww cc wwwwwwwwwwwg',
+  },
 ];
 
 const COLOR_CLASSES = {
   w: 'has-text-white',
-  b: 'has-text-info',
   r: 'has-text-danger',
   g: 'has-text-success',
   c: 'has-text-primary',
@@ -137,11 +156,7 @@ export default class Greeting extends React.Component {
     );
 
     return _.map(coloredChars, ([char, color, id]) => (
-      char === '\n' ? (
-        <br key={id} />
-      ) : (
-        <span key={id} className={COLOR_CLASSES[color]}>{char}</span>
-      )
+      <span key={id} className={COLOR_CLASSES[color]}>{char}</span>
     ));
   }
 
@@ -155,7 +170,7 @@ export default class Greeting extends React.Component {
         {this.coloredText()}
         {
           (!this.state.cursorShouldBlink || this.state.cursorVisible) ? (
-            <span key="cursor" className="has-text-white">&#x2588;</span>
+            <span key="cursor" className="cursor">&nbsp;</span>
           ) : null
         }
       </p>

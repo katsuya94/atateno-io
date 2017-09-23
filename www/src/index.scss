@@ -15,5 +15,9 @@ $grey-darker: rgb(66, 66, 66);
   font-family: "DejaVuSansMono", Courier, monospace;
   src: url("~dejavu-fonts-ttf/ttf/DejaVuSansMono.ttf");
   height: 6.0em;
+  white-space: pre;
 }
 
+.cursor {
+  background-color: $white,
+}
