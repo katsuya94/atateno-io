@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { PropTypes } from 'prop-types';
 import Greeting from './Greeting';
 import Professional from './Professional';
 import Blog from './Blog';
@@ -29,13 +30,30 @@ function Hero() {
   );
 }
 
+function NavItem({ children, ...routeProps }) {
+  return (
+    <Route {...routeProps}>
+      {({ match }) => (
+        <li className={match ? 'is-active' : ''}>
+          <Link to={routeProps.path}>{children}</Link>
+        </li>
+      )}
+    </Route>
+  );
+}
+
+NavItem.propTypes = {
+  children: PropTypes.string.isRequired,
+};
+
+
 function Nav() {
   return (
     <div className="tabs is-centered is-medium">
       <ul>
-        <li><Link to="/">Professional</Link></li>
-        <li><Link to="/blog">Blog</Link></li>
-        <li><Link to="/projects">Projects</Link></li>
+        <NavItem exact path="/">Professional</NavItem>
+        <NavItem path="/blog">Blog</NavItem>
+        <NavItem path="/projects">Projects</NavItem>
       </ul>
     </div>
   );
