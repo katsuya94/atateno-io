@@ -11,13 +11,64 @@ $grey-darker: rgb(66, 66, 66);
 
 @import "~bulma";
 
-.greeting-text {
-  font-family: "DejaVuSansMono", Courier, monospace;
-  src: url("~dejavu-fonts-ttf/ttf/DejaVuSansMono.ttf");
-  height: 6.0em;
-  white-space: pre;
+.app-hero {
+  &.app-hero-real {
+    position: fixed;
+    display: block;
+    width: 100%;
+  }
 }
 
-.cursor {
-  background-color: $white,
+.app-greeting {
+  & {
+    font-family: "DejaVuSansMono", Courier, monospace;
+    src: url("~dejavu-fonts-ttf/ttf/DejaVuSansMono.ttf");
+    height: 6.0em;
+    white-space: pre;
+  }
+
+  .cursor {
+    background-color: $white,
+  }
+}
+
+.app-nav {
+  & {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: $white;
+  }
+
+  .tabs {
+    margin-bottom: 0px;
+  }
+
+  .gradient {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(
+     to bottom,
+     rgba(255,255,255,1.0) 0%,
+     rgba(255,255,255,0.99) 10%,
+     rgba(255,255,255,0.96) 20%,
+     rgba(255,255,255,0.04) 80%,
+     rgba(255,255,255,0.01) 90%,
+     rgba(255,255,255,0.0) 100%
+    );
+  }
+}
+
+.app-body {
+  & {
+    background-color: $white;
+    position: relative;
+  }
+}
+
+.app-experience {
+  & {
+    text-align: center;
+  }
 }

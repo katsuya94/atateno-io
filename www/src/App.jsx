@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 import Greeting from './Greeting';
-import Professional from './Professional';
+import Experience from './Experience';
 import Blog from './Blog';
 import Projects from './Projects';
 
@@ -20,13 +20,18 @@ export default function App() {
 
 function Hero() {
   return (
-    <section className="hero is-dark">
-      <div className="hero-body">
-        <div className="container">
+    <div>
+      <section className="app-hero app-hero-real hero is-dark">
+        <div className="hero-body">
           <Greeting />
         </div>
+      </section>
+      <div className="app-hero hero is-dark">
+        <div className="hero-body">
+          <p className="app-greeting is-size-3" />
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -46,23 +51,25 @@ NavItem.propTypes = {
   children: PropTypes.string.isRequired,
 };
 
-
 function Nav() {
   return (
-    <div className="tabs is-centered is-medium">
-      <ul>
-        <NavItem exact path="/">Professional</NavItem>
-        <NavItem path="/blog">Blog</NavItem>
-        <NavItem path="/projects">Projects</NavItem>
-      </ul>
+    <div className="app-nav">
+      <div className="tabs is-centered is-medium">
+        <ul>
+          <NavItem exact path="/">Experience</NavItem>
+          <NavItem path="/blog">Blog</NavItem>
+          <NavItem path="/projects">Projects</NavItem>
+        </ul>
+      </div>
+      <div className="gradient" />
     </div>
   );
 }
 
 function Body() {
   return (
-    <section className="section">
-      <Route exact path="/" component={Professional} />
+    <section className="app-body section">
+      <Route exact path="/" component={Experience} />
       <Route path="/blog" component={Blog} />
       <Route path="/projects" component={Projects} />
     </section>

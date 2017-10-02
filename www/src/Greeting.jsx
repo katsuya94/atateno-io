@@ -166,7 +166,7 @@ export default class Greeting extends React.Component {
 
   render() {
     return (
-      <p className="greeting-text is-size-3">
+      <p className="app-greeting is-size-3">
         {this.coloredText()}
         {
           (!this.state.cursorShouldBlink || this.state.cursorVisible) ? (
