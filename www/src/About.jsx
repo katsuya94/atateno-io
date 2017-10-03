@@ -22,11 +22,21 @@ function Title() {
 function Technologies() {
   return (
     <div className="app-technologies">
-      <img src={kubernetes} alt="Kubernetes" />
-      <img src={kafka} alt="Kafka" />
-      <img src={react} alt="React" />
-      <img src={rails} alt="Ruby on Rails" />
-      <img src={racket} alt="Racket" />
+      <a href="//kubernetes.io" target="_blank" rel="noopener noreferrer">
+        <img src={kubernetes} alt="Kubernetes" />
+      </a>
+      <a href="//kafka.apache.org" target="_blank" rel="noopener noreferrer">
+        <img src={kafka} alt="Kafka" />
+      </a>
+      <a href="//reactjs.org" target="_blank" rel="noopener noreferrer">
+        <img src={react} alt="React" />
+      </a>
+      <a href="//rubyonrails.org" target="_blank" rel="noopener noreferrer">
+        <img src={rails} alt="Ruby on Rails" />
+      </a>
+      <a href="//racket-lang.org" target="_blank" rel="noopener noreferrer">
+        <img src={racket} alt="Racket" />
+      </a>
     </div>
   );
 }
@@ -59,13 +69,23 @@ function Preferences() {
 function Social() {
   return (
     <div className="app-links">
-      <a href="//github.com/katsuya94" className="button is-large">
+      <a
+        href="//github.com/katsuya94"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="button is-large"
+      >
         <span className="icon">
           <i className="fa fa-github" />
         </span>
         <span>GitHub</span>
       </a>
-      <a href="//www.linkedin.com/in/atateno" className="button is-large">
+      <a
+        href="//www.linkedin.com/in/atateno"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="button is-large"
+      >
         <span className="icon">
           <i className="fa fa-linkedin" />
         </span>
@@ -81,7 +101,7 @@ function Social() {
   );
 }
 
-export default function Experience() {
+export default function About() {
   return (
     <div className="app-experience container">
       <Title />

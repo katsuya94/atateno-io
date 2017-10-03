@@ -24,13 +24,27 @@ $grey-darker: rgb(66, 66, 66);
     display: block;
     width: 100%;
   }
+
+  .hero-body {
+    padding: 1.5rem 0.75rem;
+
+    @include desktop {
+      padding: 3rem 1.5rem;
+    }
+  }
 }
 
 .app-greeting {
   & {
+    font-size: 1rem !important;
+
     font-family: "DejaVuSansMono", Courier, monospace;
-    height: 6.0em;
     white-space: pre;
+    height: 6em;
+
+    @include desktop {
+      font-size: 2rem !important;
+    }
   }
 
   .cursor {

@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 import Greeting from './Greeting';
-import Experience from './Experience';
+import About from './About';
 import Blog from './Blog';
 import Projects from './Projects';
 
@@ -56,7 +56,7 @@ function Nav() {
     <div className="app-nav">
       <div className="tabs is-centered is-medium">
         <ul>
-          <NavItem exact path="/">Experience</NavItem>
+          <NavItem exact path="/">About</NavItem>
           <NavItem path="/blog">Blog</NavItem>
           <NavItem path="/projects">Projects</NavItem>
         </ul>
@@ -69,7 +69,7 @@ function Nav() {
 function Body() {
   return (
     <section className="app-body section">
-      <Route exact path="/" component={Experience} />
+      <Route exact path="/" component={About} />
       <Route path="/blog" component={Blog} />
       <Route path="/projects" component={Projects} />
     </section>
