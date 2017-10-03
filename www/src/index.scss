@@ -1,3 +1,5 @@
+@import "~font-awesome/css/font-awesome.css";
+
 @import "~bulma/sass/utilities/initial-variables";
 
 $turquoise: rgb(80, 202, 221);
@@ -11,6 +13,11 @@ $grey-darker: rgb(66, 66, 66);
 
 @import "~bulma";
 
+@font-face {
+  font-family: "DejaVuSansMono";
+  src: url("~dejavu-fonts-ttf/ttf/DejaVuSansMono.ttf") format("truetype");
+}
+
 .app-hero {
   &.app-hero-real {
     position: fixed;
@@ -22,7 +29,6 @@ $grey-darker: rgb(66, 66, 66);
 .app-greeting {
   & {
     font-family: "DejaVuSansMono", Courier, monospace;
-    src: url("~dejavu-fonts-ttf/ttf/DejaVuSansMono.ttf");
     height: 6.0em;
     white-space: pre;
   }
@@ -68,7 +74,61 @@ $grey-darker: rgb(66, 66, 66);
 }
 
 .app-experience {
-  & {
-    text-align: center;
+  .app-title {
+    .title, .subtitle {
+      text-align: center;
+    }
+
+    .subtitle {
+      font-family: "DejaVuSansMono", Courier, monospace;
+    }
+  }
+
+  .app-technologies {
+    & {
+      text-align: center;
+      margin: 48px;
+    }
+
+    img {
+      height: 144px;
+      padding: 32px;
+    }
+  }
+
+  .app-preferences {
+    & {
+      text-align: center;
+    }
+
+    .preference {
+      & {
+        @extend .content;
+
+        text-align: left;
+        display: inline-block;
+        width: 280px;
+        margin: 0 40px;
+      }
+
+      h3 {
+        font-family: "DejaVuSansMono", Courier, monospace;
+        text-align: center;
+      }
+    }
+  }
+
+  .app-links {
+    & {
+      text-align: center;
+      margin: 32px;
+    }
+
+    .button {
+      & {
+        margin: 16px;
+        font-family: "DejaVuSansMono", Courier, monospace;
+      }
+    }
   }
 }
