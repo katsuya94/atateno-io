@@ -57,7 +57,7 @@ function Preferences() {
         <h3>Dislikes</h3>
         <ul>
           <li>Side Effects</li>
-          <li>Broken Dev Environments</li>
+          <li>Losing Time to Bad Tools</li>
           <li>Bad Domain-Specific Languages</li>
           <li>Forks (like, the silverware)</li>
         </ul>
