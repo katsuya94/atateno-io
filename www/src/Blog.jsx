@@ -1,14 +1,14 @@
-import React from 'react';
-import _ from 'lodash';
+import React from "react";
+import _ from "lodash";
 
-const REF = 'drafts';
+const REF = "drafts";
 const INDEX_URL = _.template(
-  'https://api.github.com/repos/katsuya94/blog/contents?ref=<%= ref %>',
+  "https://api.github.com/repos/katsuya94/blog/contents?ref=<%= ref %>"
 )({ ref: REF });
-const COMMITS_URL = path => _.template(
-  'https://api.github.com/repos/katsuya94/blog/commits?path=<%= path %>&sha=<%= ref %>',
-)({ ref: REF, path });
-
+const COMMITS_URL = path =>
+  _.template(
+    "https://api.github.com/repos/katsuya94/blog/commits?path=<%= path %>&sha=<%= ref %>"
+  )({ ref: REF, path });
 
 class Post {
   constructor(contents) {
@@ -19,13 +19,13 @@ class Post {
   populate() {
     const contentsPromise = fetch(this.url)
       .then(response => response.text())
-      .then((content) => {
+      .then(content => {
         this.content = content;
       });
 
     const commitsPromise = fetch(COMMITS_URL(this.path))
       .then(response => response.json())
-      .then((commits) => {
+      .then(commits => {
         this.ref = _.first(commits).commit.sha;
         this.updated = _.first(commits).commit.author.date;
         this.created = _.last(commits).commit.author.date;
@@ -40,19 +40,19 @@ class Index extends React.Component {
     super();
 
     this.state = {
-      posts: [],
+      posts: []
     };
   }
 
   componentWillMount() {
     fetch(INDEX_URL)
       .then(response => response.json())
-      .then((index) => {
+      .then(index => {
         this.posts = _.map(index, contents => new Post(contents));
 
-        _.each(this.posts, post => (
+        _.each(this.posts, post =>
           post.populate().then(() => this.computeState())
-        ));
+        );
 
         this.computeState();
       });
@@ -63,7 +63,7 @@ class Index extends React.Component {
       content: post.content,
       ref: post.ref,
       updated: post.updated,
-      created: post.created,
+      created: post.created
     }));
 
     this.setState({ posts: postsForState });
@@ -73,11 +73,7 @@ class Index extends React.Component {
     return (
       <div className="app-index">
         <ul>
-          {
-            _.map(this.state.posts, post => (
-              <li>{JSON.stringify(post)}</li>
-            ))
-          }
+          {_.map(this.state.posts, post => <li>{JSON.stringify(post)}</li>)}
         </ul>
       </div>
     );

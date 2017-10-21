@@ -1,10 +1,10 @@
-import React from 'react';
-import {BrowserRouter, Route, Link} from 'react-router-dom';
-import {PropTypes} from 'prop-types';
-import Greeting from './Greeting';
-import About from './About';
-import Blog from './Blog';
-import Projects from './Projects';
+import React from "react";
+import { BrowserRouter, Route, Link } from "react-router-dom";
+import { PropTypes } from "prop-types";
+import Greeting from "./Greeting";
+import About from "./About";
+import Blog from "./Blog";
+import Projects from "./Projects";
 
 export default function App() {
   return (
@@ -35,11 +35,11 @@ function Hero() {
   );
 }
 
-function NavItem({children, ...routeProps}) {
+function NavItem({ children, ...routeProps }) {
   return (
     <Route {...routeProps}>
-      {({match}) => (
-        <li className={match ? 'is-active' : ''}>
+      {({ match }) => (
+        <li className={match ? "is-active" : ""}>
           <Link to={routeProps.path}>{children}</Link>
         </li>
       )}
@@ -48,7 +48,7 @@ function NavItem({children, ...routeProps}) {
 }
 
 NavItem.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired
 };
 
 function Nav() {

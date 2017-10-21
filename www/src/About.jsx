@@ -1,17 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import kubernetes from '../assets/kubernetes.svg';
-import kafka from '../assets/kafka.svg';
-import react from '../assets/react.svg';
-import rails from '../assets/rails.svg';
-import racket from '../assets/racket.svg';
+import React from "react";
+import { Link } from "react-router-dom";
+import kubernetes from "../assets/kubernetes.svg";
+import kafka from "../assets/kafka.svg";
+import react from "../assets/react.svg";
+import rails from "../assets/rails.svg";
+import racket from "../assets/racket.svg";
 
 function Title() {
   return (
     <div className="app-title">
-      <h1 className="title is-size-1">
-        Adrien Tateno
-      </h1>
+      <h1 className="title is-size-1">Adrien Tateno</h1>
       <h2 className="subtitle is-size-3">
         Create <b className="has-text-primary">systems</b>, not goals.
       </h2>

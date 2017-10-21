@@ -1,60 +1,52 @@
-import React from 'react';
-import _ from 'lodash';
+import React from "react";
+import _ from "lodash";
 
-const GREETINGS = [
-  'Hi, I\'m Adrien.',
-  '你好。我叫Adrien。',
-  'こんにちは。Adrienと申します。',
-];
+const GREETINGS = ["Hi, I'm Adrien.", "你好。我叫Adrien。", "こんにちは。Adrienと申します。"];
 
 const SNIPPETS = [
   {
-    text:
-    '#lang racket\n' +
-    '(display "<%= greetingText %>")',
-    color:
-    'wwwww cccccc\n' +
-    'rccccccc g<%= greetingColor("g") %>gr',
+    text: "#lang racket\n" + '(display "<%= greetingText %>")',
+    color: "wwwww cccccc\n" + 'rccccccc g<%= greetingColor("g") %>gr'
   },
   {
     text:
-    'ReactDOM.render(\n' +
-    '  <p><%= greetingText %></p>,\n' +
-    '  document.getElementById(\'root\'),\n' +
-    ');',
+      "ReactDOM.render(\n" +
+      "  <p><%= greetingText %></p>,\n" +
+      "  document.getElementById('root'),\n" +
+      ");",
     color:
-    'ccccccccwccccccw\n' +
-    '  ccc<%= greetingColor("w") %>ccccw\n' +
-    '  rrrrrrrrwccccccccccccccwggggggww\n' +
-    'ww',
+      "ccccccccwccccccw\n" +
+      '  ccc<%= greetingColor("w") %>ccccw\n' +
+      "  rrrrrrrrwccccccccccccccwggggggww\n" +
+      "ww"
   },
   {
     text:
-    'def show\n' +
-    '  render plain: "<%= greetingText %>", status: :ok\n' +
-    'end',
+      "def show\n" +
+      '  render plain: "<%= greetingText %>", status: :ok\n' +
+      "end",
     color:
-    'rrr wwww\n' +
-    '  wwwwww cccccw g<%= greetingColor("g") %>gw ccccccw ccc\n' +
-    'rrr',
+      "rrr wwww\n" +
+      '  wwwwww cccccw g<%= greetingColor("g") %>gw ccccccw ccc\n' +
+      "rrr"
   },
   {
     text:
-    'kubectl run greet --image python:3\\\n' +
-    '  --port 8000 --hostport 8000 -- sh -c\\\n' +
-    '  "echo \'<%= greetingText %>\' > greet && python3 -m http.server"',
+      "kubectl run greet --image python:3\\\n" +
+      "  --port 8000 --hostport 8000 -- sh -c\\\n" +
+      "  \"echo '<%= greetingText %>' > greet && python3 -m http.server\"",
     color:
-    'wwwwwww www wwwwt ccccccc wwwwwwwwr\n' +
-    '  cccccc rrrr cccccccccc rrrr cc ww ccr\n' +
-    '  gwwww g<%= greetingColor("g") %>g r wwwww rr wwwwwww cc wwwwwwwwwwwg',
-  },
+      "wwwwwww www wwwwt ccccccc wwwwwwwwr\n" +
+      "  cccccc rrrr cccccccccc rrrr cc ww ccr\n" +
+      '  gwwww g<%= greetingColor("g") %>g r wwwww rr wwwwwww cc wwwwwwwwwwwg'
+  }
 ];
 
 const COLOR_CLASSES = {
-  w: 'has-text-white',
-  r: 'has-text-danger',
-  g: 'has-text-success',
-  c: 'has-text-primary',
+  w: "has-text-white",
+  r: "has-text-danger",
+  g: "has-text-success",
+  c: "has-text-primary"
 };
 
 export default class Greeting extends React.Component {
@@ -73,20 +65,14 @@ export default class Greeting extends React.Component {
       colors: [],
       ids: [],
       cursorBlink: true,
-      cursorShouldBlink: false,
+      cursorShouldBlink: false
     };
   }
 
   componentDidMount() {
-    this.animationTimerId = window.setInterval(
-      () => this.tick(),
-      30,
-    );
+    this.animationTimerId = window.setInterval(() => this.tick(), 30);
 
-    this.blinkTimerId = window.setInterval(
-      () => this.toggleCursor(),
-      1000,
-    );
+    this.blinkTimerId = window.setInterval(() => this.toggleCursor(), 1000);
   }
 
   componentWillUnmount() {
@@ -103,7 +89,7 @@ export default class Greeting extends React.Component {
 
     this.target = {
       chars: [...snippetText({ greetingText })],
-      colors: [...snippetColor({ greetingColor })],
+      colors: [...snippetColor({ greetingColor })]
     };
 
     this.target.ids = _.range(this.target.chars.length);
@@ -139,9 +125,8 @@ export default class Greeting extends React.Component {
       this.computeTarget();
     }
 
-    const greetingState = _.mapValues(
-      this.target,
-      array => _.take(array, typedLength),
+    const greetingState = _.mapValues(this.target, array =>
+      _.take(array, typedLength)
     );
 
     this.setState(_.assign(greetingState, { cursorShouldBlink }));
@@ -152,11 +137,13 @@ export default class Greeting extends React.Component {
     const coloredChars = _.zip(
       this.state.chars,
       this.state.colors,
-      this.state.ids,
+      this.state.ids
     );
 
     return _.map(coloredChars, ([char, color, id]) => (
-      <span key={id} className={COLOR_CLASSES[color]}>{char}</span>
+      <span key={id} className={COLOR_CLASSES[color]}>
+        {char}
+      </span>
     ));
   }
 
@@ -168,11 +155,11 @@ export default class Greeting extends React.Component {
     return (
       <p className="app-greeting">
         {this.coloredText()}
-        {
-          (!this.state.cursorShouldBlink || this.state.cursorVisible) ? (
-            <span key="cursor" className="cursor">&nbsp;</span>
-          ) : null
-        }
+        {!this.state.cursorShouldBlink || this.state.cursorVisible ? (
+          <span key="cursor" className="cursor">
+            &nbsp;
+          </span>
+        ) : null}
       </p>
     );
   }
