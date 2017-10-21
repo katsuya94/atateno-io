@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-import { PropTypes } from 'prop-types';
+import {BrowserRouter, Route, Link} from 'react-router-dom';
+import {PropTypes} from 'prop-types';
 import Greeting from './Greeting';
 import About from './About';
 import Blog from './Blog';
@@ -35,10 +35,10 @@ function Hero() {
   );
 }
 
-function NavItem({ children, ...routeProps }) {
+function NavItem({children, ...routeProps}) {
   return (
     <Route {...routeProps}>
-      {({ match }) => (
+      {({match}) => (
         <li className={match ? 'is-active' : ''}>
           <Link to={routeProps.path}>{children}</Link>
         </li>
@@ -56,7 +56,9 @@ function Nav() {
     <div className="app-nav">
       <div className="tabs is-centered is-medium">
         <ul>
-          <NavItem exact path="/">About</NavItem>
+          <NavItem exact path="/">
+            About
+          </NavItem>
           <NavItem path="/blog">Blog</NavItem>
           <NavItem path="/projects">Projects</NavItem>
         </ul>
