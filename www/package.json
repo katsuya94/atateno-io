@@ -2,8 +2,9 @@
   "name": "www",
   "scripts": {
     "push": "docker push katsuya94/www:latest",
-    "start": "nodemon -w src -e 'jsx html' -x 'npm run lint && webpack && babel-node' src/server.jsx",
-    "lint": "eslint src/*.jsx"
+    "start": "nodemon -w src -e 'js jsx html' -x 'npm run lint && npm run pack && babel-node' src/server.jsx",
+    "lint": "eslint --cache src/*.jsx src/*.js",
+    "pack": "webpack"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -35,17 +36,16 @@
     "bulma": "^0.5.2",
     "dejavu-fonts-ttf": "^2.37.3",
     "eslint-plugin-lodash": "^2.4.5",
-    "exenv": "^1.2.2",
     "express": "^4.15.4",
     "font-awesome": "^4.7.0",
     "helmet": "^3.8.1",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "morgan": "^1.8.2",
     "prop-types": "^15.6.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-router-dom": "^4.2.2",
-    "react-transmit": "^3.2.0",
     "reload": "^2.2.2"
   },
   "false": {}

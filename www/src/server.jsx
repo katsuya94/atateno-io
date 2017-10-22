@@ -15,7 +15,7 @@ import ReactDOMServer from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 
 import App from "./App";
-import BlogService from "./BlogService";
+import BlogGateway from "./BlogGateway";
 
 const app = express();
 const ROOT = process.cwd();
@@ -26,8 +26,9 @@ app.use(morgan("combined"));
 app.use(helmet());
 app.use("/assets", express.static(path.resolve(ROOT, "public")));
 
-app.use((_req, res) => {
-  res.locals.context = {};
+app.use((_req, res, next) => {
+  res.locals.context = { isServerRendered: true };
+  next();
 });
 
 function render(req, res) {
@@ -38,30 +39,34 @@ function render(req, res) {
   );
   const body = html.replace(
     /<div id="app"><\/div>/,
-    `<div id="app">
-    ${_.trim(rendered)}
-    </div>`
+    `<div id="app">${_.trim(rendered)}</div>`
   );
   res.status(200).send(body);
 }
 
 app.get(
   "/blog",
-  (req, res) => {
-    res.locals.context.data = BlogService.index();
+  (req, res, next) => {
+    BlogGateway.index().then(data => {
+      res.locals.context.data = data;
+      next();
+    });
   },
   render
 );
 
 app.get(
   "/blog/:id",
-  (req, res) => {
-    res.locals.context.data = BlogService.show(req.params.id);
+  (req, res, next) => {
+    BlogGateway.show(req.params.id).then(data => {
+      res.locals.context.data = data;
+      next();
+    });
   },
   render
 );
 
-app.get("*", render);
+app.get("/", render);
 
 if (app.get("env") === "development") {
   reload(app);

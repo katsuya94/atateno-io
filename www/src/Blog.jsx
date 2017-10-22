@@ -1,128 +1,56 @@
 import React from "react";
-import Transmit from "react-transmit";
+import { Route } from "react-router-dom";
+import { PropTypes } from "prop-types";
 import _ from "lodash";
 
-const REF = "drafts";
-const INDEX_URL = _.template(
-  "https://api.github.com/repos/katsuya94/blog/contents?ref=<%= ref %>"
-)({ ref: REF });
-const COMMITS_URL = path =>
-  _.template(
-    "https://api.github.com/repos/katsuya94/blog/commits?path=<%= path %>&sha=<%= ref %>"
-  )({ ref: REF, path });
-
-class Post {
-  constructor(contents) {
-    this.url = contents.download_url;
-    this.path = contents.path;
-  }
-
-  populate() {
-    const contentsPromise = fetch(this.url)
-      .then(response => response.text())
-      .then(content => {
-        this.content = content;
-      });
-
-    const commitsPromise = fetch(COMMITS_URL(this.path))
-      .then(response => response.json())
-      .then(commits => {
-        this.ref = _.first(commits).commit.sha;
-        this.updated = _.first(commits).commit.author.date;
-        this.created = _.last(commits).commit.author.date;
-      });
-
-    return Promise.all([contentsPromise, commitsPromise]);
-  }
-}
-
-const Index = IsomorphicContainer(
-  () => (
-    <div className="app-index">
-      <ul>
-        {_.map(this.state.posts, post => <li>{JSON.stringify(post)}</li>)}
-      </ul>
-    </div>
-  ),
-  () => {
-
-  }
-);
+import BlogGateway from "./BlogGateway";
 
 class Index extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.state = {
-      posts: []
-    };
+    this.state = { posts: props.data.posts };
   }
 
   componentDidMount() {
-    fetch(INDEX_URL)
-      .then(response => response.json())
-      .then(index => {
-        this.posts = _.map(index, contents => new Post(contents));
-
-        _.each(this.posts, post =>
-          post.populate().then(() => this.computeState())
-        );
-
-        this.computeState();
+    if (!this.props.data.isServerRendered) {
+      BlogGateway.index().then(data => {
+        this.setState(data);
       });
-  }
-
-  computeState() {
-    const postsForState = _.map(this.posts, post => ({
-      content: post.content,
-      ref: post.ref,
-      updated: post.updated,
-      created: post.created
-    }));
-
-    this.setState({ posts: postsForState });
+    }
   }
 
   render() {
     return (
       <div className="app-index">
         <ul>
-          {_.map(this.state.posts, post => <li>{JSON.stringify(post)}</li>)}
+          {_.map(this.state.posts, post => (
+            <li key={post.id}>{JSON.stringify(post)}</li>
+          ))}
         </ul>
       </div>
     );
   }
 }
 
-const Index = Transmit.createContainer(function() {
-  return (
-    <div className="app-index">
-      <ul>
-        {_.map(this.state.posts, post => <li>{JSON.stringify(post)}</li>)}
-      </ul>
-    </div>
-  );
-}, {
-  fragments: {
-    posts: () => {
-      fetch(INDEX_URL)
-        .then(response => {
-          this.posts = _.map(response.json(), contents => new Post(contents));
+Index.propTypes = {
+  data: PropTypes.shape({
+    posts: PropTypes.array.isRequired,
+    isServerRendered: PropTypes.bool.isRequired
+  })
+};
 
-          _.each(this.posts, post =>
-            post.populate().then(() => this.computeState())
-          );
-
-          return Promise.all(
-            _.map(response.json(), (contents) => IndexItem.getFragment(
-        });
-    }
-});
+Index.defaultProps = {
+  data: { posts: [], isServerRendered: false }
+};
 
 export default function Blog() {
   return (
     <div className="app-blog container">
-      <Index />
+      <Route
+        render={({ staticContext }) =>
+          staticContext ? <Index data={staticContext.data} /> : <Index />}
+      />
     </div>
   );
 }
