@@ -1,4 +1,5 @@
 import React from "react";
+import Transmit from "react-transmit";
 import _ from "lodash";
 
 const REF = "drafts";
@@ -35,6 +36,19 @@ class Post {
   }
 }
 
+const Index = IsomorphicContainer(
+  () => (
+    <div className="app-index">
+      <ul>
+        {_.map(this.state.posts, post => <li>{JSON.stringify(post)}</li>)}
+      </ul>
+    </div>
+  ),
+  () => {
+
+  }
+);
+
 class Index extends React.Component {
   constructor() {
     super();
@@ -44,7 +58,7 @@ class Index extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     fetch(INDEX_URL)
       .then(response => response.json())
       .then(index => {
@@ -79,6 +93,31 @@ class Index extends React.Component {
     );
   }
 }
+
+const Index = Transmit.createContainer(function() {
+  return (
+    <div className="app-index">
+      <ul>
+        {_.map(this.state.posts, post => <li>{JSON.stringify(post)}</li>)}
+      </ul>
+    </div>
+  );
+}, {
+  fragments: {
+    posts: () => {
+      fetch(INDEX_URL)
+        .then(response => {
+          this.posts = _.map(response.json(), contents => new Post(contents));
+
+          _.each(this.posts, post =>
+            post.populate().then(() => this.computeState())
+          );
+
+          return Promise.all(
+            _.map(response.json(), (contents) => IndexItem.getFragment(
+        });
+    }
+});
 
 export default function Blog() {
   return (

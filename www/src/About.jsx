@@ -1,10 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import kubernetes from "../assets/kubernetes.svg";
-import kafka from "../assets/kafka.svg";
-import react from "../assets/react.svg";
-import rails from "../assets/rails.svg";
-import racket from "../assets/racket.svg";
 
 function Title() {
   return (
@@ -21,19 +16,19 @@ function Technologies() {
   return (
     <div className="app-technologies">
       <a href="//kubernetes.io" target="_blank" rel="noopener noreferrer">
-        <img src={kubernetes} alt="Kubernetes" />
+        <img src="/assets/kubernetes.svg" alt="Kubernetes" />
       </a>
       <a href="//kafka.apache.org" target="_blank" rel="noopener noreferrer">
-        <img src={kafka} alt="Kafka" />
+        <img src="/assets/kafka.svg" alt="Kafka" />
       </a>
       <a href="//reactjs.org" target="_blank" rel="noopener noreferrer">
-        <img src={react} alt="React" />
+        <img src="/assets/react.svg" alt="React" />
       </a>
       <a href="//rubyonrails.org" target="_blank" rel="noopener noreferrer">
-        <img src={rails} alt="Ruby on Rails" />
+        <img src="/assets/rails.svg" alt="Ruby on Rails" />
       </a>
       <a href="//racket-lang.org" target="_blank" rel="noopener noreferrer">
-        <img src={racket} alt="Racket" />
+        <img src="/assets/racket.svg" alt="Racket" />
       </a>
     </div>
   );

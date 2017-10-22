@@ -1,9 +1,15 @@
 {
   "parser": "babel-eslint",
-  "env": {"browser": true},
+  "env": {"browser": true, "node": true},
   "plugins": ["react", "prettier"],
   "rules": {
     "prettier/prettier": "error",
-  }
+    "jsx-a11y/anchor-is-valid": ["error", {"components": []}]
+  },
+  "extends": [
+    "airbnb",
+    "prettier",
+    "prettier/react"
+  ]
 }
 

@@ -1,10 +1,10 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: path.resolve(__dirname, "src", "index.jsx"),
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "public"),
     filename: "index.js"
   },
   devtool: "source-map",
@@ -19,24 +19,22 @@ module.exports = {
         use: ["babel-loader"]
       },
       {
-        test: /\.jsx$/,
-        exclude: /node_modules/,
-        use: ["eslint-loader"]
-      },
-      {
         test: [/\.scss$/, /\.sass$/],
-        use: ["style-loader", "css-loader", "sass-loader"]
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: ["css-loader", "sass-loader"]
+        })
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png)$/,
-        use: ["file-loader"]
+        use: [
+          {
+            loader: "file-loader",
+            options: { name: "[name].[ext]" }
+          }
+        ]
       }
     ]
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "src", "index.html"),
-      inject: "body"
-    })
-  ]
+  plugins: [new ExtractTextPlugin("[name].css")]
 };

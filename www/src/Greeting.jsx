@@ -5,40 +5,46 @@ const GREETINGS = ["Hi, I'm Adrien.", "你好。我叫Adrien。", "こんにち�
 
 const SNIPPETS = [
   {
-    text: "#lang racket\n" + '(display "<%= greetingText %>")',
-    color: "wwwww cccccc\n" + 'rccccccc g<%= greetingColor("g") %>gr'
+    text: ["#lang racket", '(display "<%= greetingText %>")'],
+    color: ["wwwww cccccc", 'rccccccc g<%= greetingColor("g") %>gr']
   },
   {
-    text:
-      "ReactDOM.render(\n" +
-      "  <p><%= greetingText %></p>,\n" +
-      "  document.getElementById('root'),\n" +
-      ");",
-    color:
-      "ccccccccwccccccw\n" +
-      '  ccc<%= greetingColor("w") %>ccccw\n' +
-      "  rrrrrrrrwccccccccccccccwggggggww\n" +
+    text: [
+      "ReactDOM.render(",
+      "  <p><%= greetingText %></p>,",
+      "  document.getElementById('root'),",
+      ");"
+    ],
+    color: [
+      "ccccccccwccccccw",
+      '  ccc<%= greetingColor("w") %>ccccw',
+      "  rrrrrrrrwccccccccccccccwggggggww",
       "ww"
+    ]
   },
   {
-    text:
-      "def show\n" +
-      '  render plain: "<%= greetingText %>", status: :ok\n' +
-      "end",
-    color:
-      "rrr wwww\n" +
-      '  wwwwww cccccw g<%= greetingColor("g") %>gw ccccccw ccc\n' +
+    text: [
+      "def show",
+      '  render plain: "<%= greetingText %>", status: :ok',
+      "end"
+    ],
+    color: [
+      "rrr wwww",
+      '  wwwwww cccccw g<%= greetingColor("g") %>gw ccccccw ccc',
       "rrr"
+    ]
   },
   {
-    text:
-      "kubectl run greet --image python:3\\\n" +
-      "  --port 8000 --hostport 8000 -- sh -c\\\n" +
-      "  \"echo '<%= greetingText %>' > greet && python3 -m http.server\"",
-    color:
-      "wwwwwww www wwwwt ccccccc wwwwwwwwr\n" +
-      "  cccccc rrrr cccccccccc rrrr cc ww ccr\n" +
+    text: [
+      "kubectl run greet --image python:3\\",
+      "  --port 8000 --hostport 8000 -- sh -c\\",
+      "  \"echo '<%= greetingText %>' > greet && python3 -m http.server\""
+    ],
+    color: [
+      "wwwwwww www wwwwt ccccccc wwwwwwwwr",
+      "  cccccc rrrr cccccccccc rrrr cc ww ccr",
       '  gwwww g<%= greetingColor("g") %>g r wwwww rr wwwwwww cc wwwwwwwwwwwg'
+    ]
   }
 ];
 
@@ -64,7 +70,7 @@ export default class Greeting extends React.Component {
       chars: [],
       colors: [],
       ids: [],
-      cursorBlink: true,
+      cursorVisible: true,
       cursorShouldBlink: false
     };
   }
@@ -84,8 +90,8 @@ export default class Greeting extends React.Component {
     const greetingColor = color => _.repeat(color, greetingText.length);
 
     const snippet = SNIPPETS[this.snippetIndex];
-    const snippetText = _.template(snippet.text);
-    const snippetColor = _.template(snippet.color);
+    const snippetText = _.template(_.join(snippet.text, "\n"));
+    const snippetColor = _.template(_.join(snippet.color, "\n"));
 
     this.target = {
       chars: [...snippetText({ greetingText })],

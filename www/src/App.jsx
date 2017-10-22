@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import Greeting from "./Greeting";
 import About from "./About";
@@ -8,13 +8,11 @@ import Projects from "./Projects";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <div>
-        <Hero />
-        <Nav />
-        <Body />
-      </div>
-    </BrowserRouter>
+    <div>
+      <Hero />
+      <Nav />
+      <Body />
+    </div>
   );
 }
 
