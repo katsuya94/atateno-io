@@ -83,6 +83,7 @@ export default class Greeting extends React.Component {
 
   componentWillUnmount() {
     window.clearInterval(this.animationTimerId);
+    window.clearInterval(this.blinkTimerId);
   }
 
   computeTarget() {

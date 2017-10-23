@@ -71,7 +71,6 @@ function Social() {
         <span className="icon">
           <i className="fa fa-github" />
         </span>
-        <span>GitHub</span>
       </a>
       <a
         href="//www.linkedin.com/in/atateno"
@@ -82,13 +81,11 @@ function Social() {
         <span className="icon">
           <i className="fa fa-linkedin" />
         </span>
-        <span>LinkedIn</span>
       </a>
       <Link to="/blog" className="button is-large">
         <span className="icon">
           <i className="fa fa-book" />
         </span>
-        <span>Blog</span>
       </Link>
     </div>
   );

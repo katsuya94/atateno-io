@@ -13,9 +13,12 @@ import _ from "lodash";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 
 import App from "./App";
 import BlogGateway from "./BlogGateway";
+import blogReducer from "./blogReducer";
 
 const app = express();
 const ROOT = process.cwd();
@@ -27,30 +30,45 @@ app.use(helmet());
 app.use("/assets", express.static(path.resolve(ROOT, "public")));
 
 app.use((_req, res, next) => {
-  res.locals.context = { isServerRendered: true };
+  res.locals.preloadedActions = [];
   next();
 });
 
 function render(req, res) {
-  const rendered = ReactDOMServer.renderToString(
-    <StaticRouter location={req.url} context={res.locals.context}>
-      <App />
-    </StaticRouter>
+  const preloadedState = _.reduce(res.locals.preloadedActions, blogReducer, {});
+  const store = createStore(blogReducer, preloadedState);
+
+  const renderedState = JSON.stringify(preloadedState).replace(/</g, "\\u003c");
+  const renderedApp = ReactDOMServer.renderToString(
+    <Provider store={store}>
+      <StaticRouter location={req.url} context={{}}>
+        <App />
+      </StaticRouter>
+    </Provider>
   );
-  const body = html.replace(
-    /<div id="app"><\/div>/,
-    `<div id="app">${_.trim(rendered)}</div>`
-  );
-  res.status(200).send(body);
+
+  const body = html
+    .replace(
+      /<div id="app"><\/div>/,
+      `<div id="app">${_.trim(renderedApp)}</div>`
+    )
+    .replace(
+      /<script/,
+      `<script>window.PRELOADED_STATE = ${renderedState};</script><script`
+    );
+
+  const errorStatus = preloadedState.error && preloadedState.error.status;
+
+  res.status(errorStatus || 200).send(body);
 }
 
 app.get(
   "/blog",
   (req, res, next) => {
-    BlogGateway.index().then(data => {
-      res.locals.context.data = data;
+    BlogGateway.index().then(action => {
+      res.locals.preloadedActions.push(action);
       next();
-    });
+    }, next);
   },
   render
 );
@@ -58,10 +76,10 @@ app.get(
 app.get(
   "/blog/:id",
   (req, res, next) => {
-    BlogGateway.show(req.params.id).then(data => {
-      res.locals.context.data = data;
+    BlogGateway.show(req.params.id).then(action => {
+      res.locals.preloadedActions.push(action);
       next();
-    });
+    }, next);
   },
   render
 );

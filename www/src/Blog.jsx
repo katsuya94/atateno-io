@@ -1,56 +1,69 @@
 import React from "react";
-import { Route } from "react-router-dom";
-import { PropTypes } from "prop-types";
+import ReactRouterPropTypes from "react-router-prop-types";
+import PropTypes from "prop-types";
+import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
 import _ from "lodash";
 
-import BlogGateway from "./BlogGateway";
+import BlogGateway, { Post } from "./BlogGateway";
+import BlogIndex from "./BlogIndex";
+import BlogShow from "./BlogShow";
 
-class Index extends React.Component {
-  constructor(props) {
-    super(props);
+function createConnected(fetchData, mapStateToProps) {
+  return Component => {
+    const FetchingComponent = class extends React.Component {
+      componentDidMount() {
+        fetchData(this.props).then(action => {
+          this.props.dispatch(action);
+        });
+      }
 
-    this.state = { posts: props.data.posts };
-  }
+      render() {
+        return <Component {...this.props} />;
+      }
+    };
 
-  componentDidMount() {
-    if (!this.props.data.isServerRendered) {
-      BlogGateway.index().then(data => {
-        this.setState(data);
-      });
-    }
-  }
+    FetchingComponent.propTypes = {
+      dispatch: PropTypes.func.isRequired
+    };
 
-  render() {
-    return (
-      <div className="app-index">
-        <ul>
-          {_.map(this.state.posts, post => (
-            <li key={post.id}>{JSON.stringify(post)}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
+    return connect((state, ownProps) => ({
+      error: state.error,
+      ...mapStateToProps(state, ownProps)
+    }))(FetchingComponent);
+  };
 }
 
-Index.propTypes = {
-  data: PropTypes.shape({
-    posts: PropTypes.array.isRequired,
-    isServerRendered: PropTypes.bool.isRequired
-  })
-};
+const ConnectedBlogIndex = createConnected(
+  () => BlogGateway.index(),
+  state => {
+    const postsState = state.posts;
+    const posts =
+      postsState && _.map(postsState, postState => new Post(postState));
+    return { posts };
+  }
+)(BlogIndex);
 
-Index.defaultProps = {
-  data: { posts: [], isServerRendered: false }
-};
+const ConnectedBlogShow = createConnected(
+  ({ match }) => BlogGateway.show(match.params.id),
+  (state, { match }) => {
+    const postState = state.posts && state.posts[match.params.id];
+    const post = postState && new Post(postState);
+    return { post };
+  }
+)(BlogShow);
 
-export default function Blog() {
+export default function Blog({ match }) {
   return (
     <div className="app-blog container">
-      <Route
-        render={({ staticContext }) =>
-          staticContext ? <Index data={staticContext.data} /> : <Index />}
-      />
+      <Switch>
+        <Route exact path={match.url} component={ConnectedBlogIndex} />
+        <Route path={`${match.url}/:id`} component={ConnectedBlogShow} />
+      </Switch>
     </div>
   );
 }
+
+Blog.propTypes = {
+  match: ReactRouterPropTypes.match.isRequired // eslint-disable-line react/no-typos
+};

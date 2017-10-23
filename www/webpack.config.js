@@ -1,32 +1,41 @@
 const path = require("path");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-  entry: path.resolve(__dirname, "src", "index.jsx"),
+  entry: {
+    "index.js": path.resolve(__dirname, "src", "index.jsx"),
+    "index.css": path.resolve(__dirname, "src", "index.scss")
+  },
   output: {
     path: path.resolve(__dirname, "public"),
-    filename: "index.js"
+    filename: "[name]"
   },
   devtool: "source-map",
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".js", ".jsx"],
+    symlinks: false
   },
   module: {
     rules: [
       {
         test: /\.jsx$/,
-        exclude: /node_modules/,
-        use: ["babel-loader"]
+        include: path.resolve(__dirname, "src"),
+        use: ["cache-loader", "babel-loader"]
       },
       {
-        test: [/\.scss$/, /\.sass$/],
+        test: [/\.scss$/],
+        include: path.resolve(__dirname, "src"),
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: ["css-loader", "sass-loader"]
+          use: ["cache-loader", "css-loader", "sass-loader"]
         })
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png)$/,
+        include: [
+          path.resolve(__dirname, "node_modules", "dejavu-fonts-ttf"),
+          path.resolve(__dirname, "node_modules", "font-awesome")
+        ],
         use: [
           {
             loader: "file-loader",
@@ -36,5 +45,8 @@ module.exports = {
       }
     ]
   },
-  plugins: [new ExtractTextPlugin("[name].css")]
+  plugins: [
+    new ExtractTextPlugin("index.css"),
+    new CopyWebpackPlugin([{ from: "assets/*.svg", flatten: true }])
+  ]
 };

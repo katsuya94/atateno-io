@@ -1,18 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import App from "./App";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 
-import "./index.scss";
-import "../assets/kubernetes.svg";
-import "../assets/kafka.svg";
-import "../assets/react.svg";
-import "../assets/rails.svg";
-import "../assets/racket.svg";
+import App from "./App";
+import blogReducer from "./blogReducer";
+
+const preloadedState = window.PRELOADED_STATE;
+delete window.PRELOADED_STATE;
+
+const store = createStore(blogReducer, preloadedState);
+const root = document.getElementById("app");
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById("app")
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
+  root
 );
+
+store.subscribe(() => {
+  console.log(store.getState());
+});
