@@ -9,6 +9,7 @@ import blogReducer from "./blogReducer";
 
 const preloadedState = window.PRELOADED_STATE;
 delete window.PRELOADED_STATE;
+console.log(preloadedState);
 
 const store = createStore(blogReducer, preloadedState);
 const root = document.getElementById("app");

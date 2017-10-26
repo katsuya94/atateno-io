@@ -9,49 +9,62 @@ import BlogGateway, { Post } from "./BlogGateway";
 import BlogIndex from "./BlogIndex";
 import BlogShow from "./BlogShow";
 
-function createConnected(fetchData, mapStateToProps) {
+function connectedContainer({ shouldFetchData, fetchData, mapStateToProps }) {
   return Component => {
-    const FetchingComponent = class extends React.Component {
+    class Container extends React.Component {
       componentDidMount() {
-        fetchData(this.props).then(action => {
-          this.props.dispatch(action);
-        });
+        if (shouldFetchData(this.props.childProps)) {
+          fetchData(this.props.childProps).then(action => {
+            this.props.dispatch(action);
+          });
+        }
       }
 
       render() {
-        return <Component {...this.props} />;
+        return <Component {...this.props.childProps} />;
       }
+    }
+
+    Container.propTypes = {
+      dispatch: PropTypes.func.isRequired,
+      childProps: PropTypes.object.isRequired
     };
 
-    FetchingComponent.propTypes = {
-      dispatch: PropTypes.func.isRequired
-    };
-
-    return connect((state, ownProps) => ({
-      error: state.error,
-      ...mapStateToProps(state, ownProps)
-    }))(FetchingComponent);
+    return connect(() => ({
+      childProps: mapStateToProps(...arguments)
+    }))(Container);
   };
 }
 
-const ConnectedBlogIndex = createConnected(
-  () => BlogGateway.index(),
-  state => {
-    const postsState = state.posts;
-    const posts =
-      postsState && _.map(postsState, postState => new Post(postState));
+const ConnectedBlogIndex = createConnected({
+  shouldFetchData(props) {
+    return !props.posts;
+  },
+
+  fetchData(_props) {
+    return BlogGateway.index();
+  },
+
+  mapStateToProps(state) {
+    const posts = postsState && _.map(state.posts, post => new Post(post));
     return { posts };
   }
-)(BlogIndex);
+})(BlogIndex);
 
-const ConnectedBlogShow = createConnected(
-  ({ match }) => BlogGateway.show(match.params.id),
-  (state, { match }) => {
-    const postState = state.posts && state.posts[match.params.id];
-    const post = postState && new Post(postState);
+const ConnectedBlogShow = createConnected({
+  shouldFetchData(props) {
+    return !props.post || props.post.id !== props.id;
+  },
+
+  fetchData(props) {
+    return BlogGateway.show();
+  },
+
+  mapStateToProps(state) {
+    const post = state.post && new Post(state.post);
     return { post };
   }
-)(BlogShow);
+})(BlogShow);
 
 export default function Blog({ match }) {
   return (

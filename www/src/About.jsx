@@ -61,7 +61,7 @@ function Preferences() {
 
 function Social() {
   return (
-    <div className="app-links">
+    <div className="app-social">
       <a
         href="//github.com/katsuya94"
         target="_blank"

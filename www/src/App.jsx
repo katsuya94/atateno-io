@@ -1,10 +1,9 @@
 import React from "react";
-import { Route, Link } from "react-router-dom";
+import { Route, Link, Switch } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import Greeting from "./Greeting";
 import About from "./About";
 import Blog from "./Blog";
-import Projects from "./Projects";
 
 export default function App() {
   return (
@@ -69,9 +68,10 @@ function Nav() {
 function Body() {
   return (
     <section className="app-body section">
-      <Route exact path="/" component={About} />
-      <Route path="/blog" component={Blog} />
-      <Route path="/projects" component={Projects} />
+      <Switch>
+        <Route exact path="/" component={About} />
+        <Route path="/blog" component={Blog} />
+      </Switch>
     </section>
   );
 }
