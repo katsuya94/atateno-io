@@ -27,42 +27,45 @@ function connectedContainer({ shouldFetchData, fetchData, mapStateToProps }) {
 
     Container.propTypes = {
       dispatch: PropTypes.func.isRequired,
-      childProps: PropTypes.object.isRequired
+      childProps: () => {}
     };
 
-    return connect(() => ({
-      childProps: mapStateToProps(...arguments)
+    return connect((...args) => ({
+      childProps: mapStateToProps(...args)
     }))(Container);
   };
 }
 
-const ConnectedBlogIndex = createConnected({
+const ConnectedBlogIndex = connectedContainer({
   shouldFetchData(props) {
     return !props.posts;
   },
 
-  fetchData(_props) {
+  fetchData() {
     return BlogGateway.index();
   },
 
   mapStateToProps(state) {
-    const posts = postsState && _.map(state.posts, post => new Post(post));
-    return { posts };
+    const { error } = state.index;
+    const posts =
+      state.index.data && _.map(state.index.data, datum => new Post(datum));
+    return { error, posts };
   }
 })(BlogIndex);
 
-const ConnectedBlogShow = createConnected({
+const ConnectedBlogShow = connectedContainer({
   shouldFetchData(props) {
-    return !props.post || props.post.id !== props.id;
+    return !props.post;
   },
 
-  fetchData(props) {
+  fetchData() {
     return BlogGateway.show();
   },
 
-  mapStateToProps(state) {
-    const post = state.post && new Post(state.post);
-    return { post };
+  mapStateToProps(state, { match }) {
+    const { error } = state.show;
+    const post = state.show.data && new Post(state.show.data);
+    return { error, post: post.id === match.params.id && post };
   }
 })(BlogShow);
 

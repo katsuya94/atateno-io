@@ -5,13 +5,13 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 
 import App from "./App";
-import blogReducer from "./blogReducer";
+import reducer from "./reducer";
 
 const preloadedState = window.PRELOADED_STATE;
 delete window.PRELOADED_STATE;
 console.log(preloadedState);
 
-const store = createStore(blogReducer, preloadedState);
+const store = createStore(reducer, preloadedState);
 const root = document.getElementById("app");
 
 ReactDOM.render(

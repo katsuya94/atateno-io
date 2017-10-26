@@ -18,7 +18,7 @@ import { Provider } from "react-redux";
 
 import App from "./App";
 import BlogGateway from "./BlogGateway";
-import blogReducer from "./blogReducer";
+import reducer from "./reducer";
 
 const app = express();
 const ROOT = process.cwd();
@@ -35,8 +35,8 @@ app.use((_req, res, next) => {
 });
 
 function render(req, res) {
-  const preloadedState = _.reduce(res.locals.preloadedActions, blogReducer, {});
-  const store = createStore(blogReducer, preloadedState);
+  const preloadedState = _.reduce(res.locals.preloadedActions, reducer, {});
+  const store = createStore(reducer, preloadedState);
 
   const renderedState = JSON.stringify(preloadedState).replace(/</g, "\\u003c");
   const renderedApp = ReactDOMServer.renderToString(

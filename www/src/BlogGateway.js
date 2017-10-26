@@ -64,8 +64,8 @@ export class Post {
       .then(response => response.json())
       .then(commits => {
         this.ref = _.first(commits).commit.sha;
-        this.updated = _.first(commits).commit.author.date;
-        this.created = _.last(commits).commit.author.date;
+        this.updated = new Date(_.first(commits).commit.author.date);
+        this.created = new Date(_.last(commits).commit.author.date);
         return this;
       });
   }
@@ -75,8 +75,15 @@ export class Post {
   }
 
   get state() {
-    const { url, path, content, ref, updated, created, id } = this;
-    return { url, path, content, ref, updated, created, id };
+    const { url, path, content, ref } = this;
+    return {
+      url,
+      path,
+      content,
+      ref,
+      updated: this.updated.toJSON(),
+      created: this.created.toJSON()
+    };
   }
 }
 
@@ -91,7 +98,7 @@ export default class BlogGateway {
       )
         .then(() => ({
           type: "INDEX",
-          posts: _.map(posts, post => post.state)
+          data: _.map(_.sortBy(posts, post => post.created), post => post.state)
         }))
         .catch(() => ({
           type: "ERROR",
@@ -105,7 +112,7 @@ export default class BlogGateway {
       Promise.all([post.fetchContent(), post.fetchCommits()])
         .then(() => ({
           type: "SHOW",
-          post: post.state
+          data: post.state
         }))
         .catch(() => ({
           type: "ERROR",
